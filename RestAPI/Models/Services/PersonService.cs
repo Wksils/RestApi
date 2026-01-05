@@ -1,4 +1,5 @@
-﻿using RestAPI.Models.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
+using RestAPI.Models.Abstractions;
 using RestAPI.Models.Data;
 
 namespace RestAPI.Models.Services
@@ -33,12 +34,9 @@ namespace RestAPI.Models.Services
             return result;
         }
 
-        public Person Get(int id)
+        public async Task<IEnumerable<Person>> GetAll()
         {
-            Person person = db.Persons.FirstOrDefault(p => p.IdPerson == id)!;
-            if (person != null) return person;
-            return null!;
-
+            return await db.Persons.ToListAsync();
         }
 
         public bool Update(int id, Person model)
@@ -56,6 +54,11 @@ namespace RestAPI.Models.Services
                 db.SaveChanges();
             });
             return result;
+        }
+
+        public async Task<Person> Get(int id)
+        {
+            return await db.Persons.FindAsync(id);
         }
     }
 }

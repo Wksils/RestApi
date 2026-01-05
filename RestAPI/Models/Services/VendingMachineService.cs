@@ -1,4 +1,5 @@
-﻿using RestAPI.Models.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
+using RestAPI.Models.Abstractions;
 using RestAPI.Models.Data;
 
 namespace RestAPI.Models.Services
@@ -33,11 +34,9 @@ namespace RestAPI.Models.Services
             return result;
         }
 
-        public VendingMachine Get(int id)
+        public async Task<IEnumerable<VendingMachine>> GetAll()
         {
-            VendingMachine vendingMachine = db.VendingMachines.FirstOrDefault(p => p.IdVm == id)!;
-            if(vendingMachine != null)return vendingMachine;
-            return null!;
+            return await db.VendingMachines.ToListAsync();
         }
 
         public bool Update(int id, VendingMachine model)
@@ -63,6 +62,11 @@ namespace RestAPI.Models.Services
                 db.SaveChanges();
             });
             return result;
+        }
+
+        public async Task<VendingMachine> Get(int id)
+        {
+            return await db.VendingMachines.FindAsync(id);
         }
     }
 }
