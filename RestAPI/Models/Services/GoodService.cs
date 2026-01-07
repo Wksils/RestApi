@@ -1,4 +1,5 @@
-﻿using RestAPI.Models.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
+using RestAPI.Models.Abstractions;
 using RestAPI.Models.Data;
 
 namespace RestAPI.Models.Services
@@ -33,11 +34,14 @@ namespace RestAPI.Models.Services
             return result;
         }
 
-        public Good Get(int id)
+        public async Task<Good> Get(int id)
         {
-            Good good = db.Goods.FirstOrDefault(p => p.IdProduct == id)!;
-            if (good != null) return good;
-            return null!;
+            return await db.Goods.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Good>> GetAll()
+        {
+            return await db.Goods.ToListAsync();
         }
 
         public bool Update(int id, Good model)

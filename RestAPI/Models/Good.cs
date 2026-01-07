@@ -5,49 +5,49 @@ using System.Collections.Generic;
 
 namespace RestAPI.Models;
 
-public partial class Good:CommonObject
+public partial class Good //:CommonObject
 {
-    public Good()
-    {
-    }
+    //public Good()
+    //{
+    //}
 
-    public Good(GoodModel model) : base(model)
-    {
-        IdProduct = model.Id;
-        ProductName = model.ProductName;
-        Description = model.Description;
-        Price = model.Price;
-        Quantity = model.Quantity;
-        MinimumStock = model.MinimumStock;
-        Sales = model.Sales;
-        Photo = model.Photo;
+    //public Good(GoodModel model) : base(model)
+    //{
+    //    IdProduct = model.Id;
+    //    ProductName = model.ProductName;
+    //    Description = model.Description;
+    //    Price = model.Price;
+    //    Quantity = model.Quantity;
+    //    MinimumStock = model.MinimumStock;
+    //    Sales = model.Sales;
+    //    Photo = model.Photo;
 
-    }
-    public GoodModel ToDTO()
-    {
-        return new GoodModel()
-        {
-            Id = this.IdProduct,
-            ProductName = this.ProductName,
-            Description = this.Description,
-            Price = this.Price,
-            Quantity = this.Quantity,
-            MinimumStock = this.MinimumStock,
-            Sales = this.Sales,
-            Photo = this.Photo
-        };
-    }
-    public GoodModel ToShortDTO()
-    {
-        return new GoodModel()
-        {
-            Id = this.IdProduct,
-            Name = this.ProductName,
-            Description = this.Description,
-            Photo = this.Photo,
-            CreationDate = this.CreationDate
-        };
-    }
+    //}
+    //public GoodModel ToDTO()
+    //{
+    //    return new GoodModel()
+    //    {
+    //        Id = this.IdProduct,
+    //        ProductName = this.ProductName,
+    //        Description = this.Description,
+    //        Price = this.Price,
+    //        Quantity = this.Quantity,
+    //        MinimumStock = this.MinimumStock,
+    //        Sales = this.Sales,
+    //        Photo = this.Photo
+    //    };
+    //}
+    //public GoodModel ToShortDTO()
+    //{
+    //    return new GoodModel()
+    //    {
+    //        Id = this.IdProduct,
+    //        Name = this.ProductName,
+    //        Description = this.Description,
+    //        Photo = this.Photo,
+    //        CreationDate = this.CreationDate
+    //    };
+    //}
 
     public int IdProduct { get; set; }
 

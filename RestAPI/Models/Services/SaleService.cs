@@ -1,4 +1,5 @@
-﻿using RestAPI.Models.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
+using RestAPI.Models.Abstractions;
 using RestAPI.Models.Data;
 
 namespace RestAPI.Models.Services
@@ -33,11 +34,9 @@ namespace RestAPI.Models.Services
             return result;
         }
 
-        public Sale Get(int id)
+        public async Task<IEnumerable<Sale>> GetAll()
         {
-            Sale sale = db.Sales.FirstOrDefault(p => p.IdSales == id)!;
-            if (sale != null) return sale;
-            return null!;
+            return await db.Sales.ToListAsync();
         }
 
         public bool Update(int id, Sale model)
@@ -53,6 +52,11 @@ namespace RestAPI.Models.Services
                 db.SaveChanges();
             });
             return result;
+        }
+
+        public async Task<Sale> Get(int id)
+        {
+            return await db.Sales.FindAsync(id);
         }
     }
 }
