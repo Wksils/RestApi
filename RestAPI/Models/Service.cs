@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace RestAPI.Models;
 
@@ -16,8 +17,8 @@ public partial class Service
     public string? Problem { get; set; }
 
     public int IdPerson { get; set; }
-
+    [JsonIgnore]
     public virtual Person IdPersonNavigation { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual VendingMachine IdVmNavigation { get; set; } = null!;
 }

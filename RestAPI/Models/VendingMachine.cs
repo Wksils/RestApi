@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace RestAPI.Models;
 
@@ -42,14 +43,14 @@ public partial class VendingMachine
     public DateOnly DateInventory { get; set; }
 
     public int IdPerson { get; set; }
-
+    [JsonIgnore]
     public virtual Country IdCountryNavigation { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual Manufacturer IdManufacturerNavigation { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual Person IdPersonNavigation { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
-
+    [JsonIgnore]
     public virtual ICollection<Service> Services { get; set; } = new List<Service>();
 }

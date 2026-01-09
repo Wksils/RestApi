@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.Models;
 using RestAPI.Models.Data;
@@ -7,6 +8,7 @@ namespace RestAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class SaleController : ControllerBase
     {
         private readonly ApplicationContext db;
@@ -23,16 +25,16 @@ namespace RestAPI.Controllers
             return Ok(await saleService.GetAll());
         } 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Sale>> Get(int id)
+        public async Task<ActionResult<Sale>> GetById(int id)
         {
-            var sale = saleService.Get(id);
+            var sale = saleService.Get(id).Result;
             return sale == null ? NotFound(new { message = "данных о продажах нет" }):Ok(sale);
         }
         [HttpPost]
         public async Task<ActionResult<Sale>> Create([FromBody] Sale sale)
         {
             if (saleService.Create(sale))
-                return CreatedAtAction(nameof(Get), new {Id = sale.IdSales}, sale);
+                return CreatedAtAction(nameof(GetById), new {Id = sale.IdSales}, sale);
             return BadRequest();
         }
         [HttpPut("{id}")]
@@ -41,13 +43,13 @@ namespace RestAPI.Controllers
             if (id != sale.IdSales) return BadRequest();
             if (saleService.Update(id, sale))
                 return Ok(sale);
-            return BadRequest();
+            return NotFound();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delite(int id)
         {
             if (saleService.Delete(id)) return NoContent();
-            return BadRequest();
+            return NotFound();
         }
         
     }

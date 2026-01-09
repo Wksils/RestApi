@@ -2,6 +2,7 @@
 using RestAPI.Models.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace RestAPI.Models;
 
@@ -62,7 +63,7 @@ public partial class Good //:CommonObject
     public int MinimumStock { get; set; }
 
     public string Sales { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual ICollection<Sale> SalesNavigation { get; set; } = new List<Sale>();
 
 }

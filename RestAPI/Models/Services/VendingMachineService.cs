@@ -66,7 +66,8 @@ namespace RestAPI.Models.Services
 
         public async Task<VendingMachine> Get(int id)
         {
-            return await db.VendingMachines.FindAsync(id);
+            var res = await db.VendingMachines.FirstOrDefaultAsync<VendingMachine>(p=>p.IdVm == id);
+            return res;
         }
     }
 }

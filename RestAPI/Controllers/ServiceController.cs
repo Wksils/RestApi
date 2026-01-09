@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RestAPI.Models;
 using RestAPI.Models.Data;
 using RestAPI.Models.Services;
@@ -7,6 +8,7 @@ namespace RestAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ServiceController:ControllerBase
     {
         private readonly ApplicationContext db;
@@ -24,16 +26,16 @@ namespace RestAPI.Controllers
             return Ok(await serviceService.GetAll());
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Service>> Get(int id)
+        public async Task<ActionResult<Service>> GetById(int id)
         {
-            var service = serviceService.Get(id);
+            var service = serviceService.Get(id).Result;
             return service == null ? NotFound(new {message = "нет данных об обслуживании"}) : Ok(service);
         }
         [HttpPost]
         public async Task<ActionResult<Service>> Create([FromBody] Service service)
         {
             if (serviceService.Create(service)) 
-                return CreatedAtAction(nameof(Get), new { Id = service.IdService }, service);
+                return CreatedAtAction(nameof(GetById), new { Id = service.IdService }, service);
             return BadRequest();
         }
         [HttpPut("{id}")]
@@ -41,13 +43,13 @@ namespace RestAPI.Controllers
         {
             if (id != service.IdService) return BadRequest();
             if (serviceService.Update(id, service)) return Ok(service);
-            return BadRequest();
+            return NotFound();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delite(int id)
         {
             if (serviceService.Delete(id)) return NoContent();
-            return BadRequest();
+            return NotFound();
         }
 
     }

@@ -56,7 +56,8 @@ namespace RestAPI.Models.Services
 
         public async Task<Sale> Get(int id)
         {
-            return await db.Sales.FindAsync(id);
+            var res = await db.Sales.FirstOrDefaultAsync<Sale>(p=>p.IdSales==id);
+            return res;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace RestAPI.Models;
 
@@ -18,8 +19,8 @@ public partial class Sale
     public DateTime DateTimeSale { get; set; }
 
     public string PaymentMethod { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual Good IdProductNavigation { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual VendingMachine IdVmNavigation { get; set; } = null!;
 }

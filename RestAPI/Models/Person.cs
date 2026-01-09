@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace RestAPI.Models;
 
@@ -18,8 +19,9 @@ public partial class Person
     public string PhoneNumber { get; set; } = null!;
 
     public string Role { get; set; } = null!;
-
+    public string Password { get; set; } = null!;
+    [JsonIgnore]
     public virtual ICollection<Service> Services { get; set; } = new List<Service>();
-
+    [JsonIgnore]
     public virtual ICollection<VendingMachine> VendingMachines { get; set; } = new List<VendingMachine>();
 }

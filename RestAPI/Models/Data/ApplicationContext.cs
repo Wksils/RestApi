@@ -99,6 +99,7 @@ public partial class ApplicationContext : DbContext
             entity.Property(e => e.Lastname).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.PhoneNumber).HasMaxLength(50);
+            entity.Property(e => e.Password).HasMaxLength(50);
             entity.Property(e => e.Role)
                 .HasMaxLength(50)
                 .HasColumnName("role");

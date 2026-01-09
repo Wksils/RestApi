@@ -36,7 +36,8 @@ namespace RestAPI.Models.Services
 
         public async Task<Good> Get(int id)
         {
-            return await db.Goods.FindAsync(id);
+            var res= await db.Goods.FirstOrDefaultAsync<Good>(p=>p.IdProduct==id);
+            return res!;
         }
 
         public async Task<IEnumerable<Good>> GetAll()

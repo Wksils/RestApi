@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using RestAPI.Models;
 using RestAPI.Models.Data;
@@ -8,6 +9,7 @@ namespace RestAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class VendingMachineController : ControllerBase
     {
         private readonly ApplicationContext db;
@@ -24,16 +26,16 @@ namespace RestAPI.Controllers
             return Ok(await machineService.GetAll());
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<VendingMachine>> Get(int id)
+        public async Task<ActionResult<VendingMachine>> GetById(int id)
         {
-            var vendingMachine = machineService.Get(id);
+            var vendingMachine = machineService.Get(id).Result;
             return vendingMachine == null? NotFound(new {message = "Вендинговый аппарат не найден"}) : Ok(vendingMachine);
         }
         [HttpPost]
         public async Task<ActionResult<VendingMachine>> Create([FromBody] VendingMachine vendingMachine)
         {
             if (machineService.Create(vendingMachine))
-                return CreatedAtAction(nameof(Get), new { Id = vendingMachine.IdVm }, vendingMachine);
+                return CreatedAtAction(nameof(GetById), new { Id = vendingMachine.IdVm }, vendingMachine);
             return BadRequest();
         }
         [HttpPut("{id}")]
@@ -41,13 +43,13 @@ namespace RestAPI.Controllers
         {
             if (id != vendingMachine.IdVm) return BadRequest();
             if(machineService.Update(id, vendingMachine)) return Ok(vendingMachine);
-            return BadRequest();
+            return NotFound();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delite(int id)
         {
             if (machineService.Delete(id)) return NoContent();
-            return BadRequest();
+            return NotFound();
         }
     }
 }

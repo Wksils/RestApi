@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RestAPI.Models;
 using RestAPI.Models.Data;
 using RestAPI.Models.Services;
@@ -7,6 +8,7 @@ namespace RestAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GoodController: ControllerBase
     {
         private readonly ApplicationContext db;
@@ -23,16 +25,16 @@ namespace RestAPI.Controllers
             return Ok(await service.GetAll());
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Good>> Get(int id)
+        public async Task<ActionResult<Good>> GetById(int id)
         {
-            var good=service.Get(id);
+            var good=service.Get(id).Result;
             return good == null ?NotFound(new { message = "товар не найден" }) : Ok(good);
         }
         [HttpPost]
         public async Task<ActionResult<Good>> Create([FromBody] Good good)
         {
             if(service.Create(good))
-                return CreatedAtAction(nameof(Get), new { Id = good.IdProduct }, good);
+                return CreatedAtAction(nameof(GetById), new { Id = good.IdProduct }, good);
             return BadRequest();
         }
         [HttpPut("{id}")]
@@ -41,14 +43,14 @@ namespace RestAPI.Controllers
             if (good.IdProduct != id) return BadRequest();
             if (service.Update(id,good))
                 return Ok(good);
-            return BadRequest();
+            return NotFound();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             if(service.Delete(id))
                  return NoContent();
-            return BadRequest();
+            return NotFound();
         }
     }
 }
